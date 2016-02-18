@@ -1,0 +1,20 @@
+spring.jpa.hibernate.ddl-auto: update
+
+spring:
+  application:
+    name: attendees
+    
+logging.level.io.pivotal.pcf.sme.erc.client: DEBUG
+
+# Used by Feign without Eureka - expect the server to run along with client
+attendees:
+  ribbon:
+    listOfServers: localhost:${server.port:8080}
+
+# Using macros that are replaced by maven build
+info:
+  build:
+    artifact: @project.artifactId@
+    name: @project.name@
+    description: @project.description@
+    version: @project.version@

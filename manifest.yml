@@ -1,0 +1,9 @@
+---
+applications:
+- name: attendees
+  memory: 1G
+  instances: 1
+  path: target/pcf-ers-demo1-0.0.1-SNAPSHOT.jar
+  services: []
+  env:
+    SPRING_PROFILES_ACTIVE: cloud

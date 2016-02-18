@@ -1,0 +1,7 @@
+# TODO: work on the spring boot data.sql loader for PCF
+spring.datasource.initialize: false
+
+# In CF we take the application URI for the client calls
+attendees:
+  ribbon:
+    listOfServers: ${vcap.application.uris[0]}
