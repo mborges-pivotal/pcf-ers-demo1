@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mborges-pivotal/pcf-ers-demo1.svg?branch=master)](https://travis-ci.org/mborges-pivotal/pcf-ers-demo1.svg?branch=master)
+
 # PCF Elastic Runtime Service (ERS) Base Demo
 Base application to demonstrate PCF ERS
 
