@@ -1,0 +1,9 @@
+# default /h2-console, use jdbc:h2:mem:testdb
+spring.h2.console.enabled: true
+
+logging.level.io.pivotal.pcf.sme.erc.client: DEBUG
+
+# Used by Feign without Eureka - expect the server to run along with client
+attendees:
+  ribbon:
+    listOfServers: localhost:${server.port:8080}
