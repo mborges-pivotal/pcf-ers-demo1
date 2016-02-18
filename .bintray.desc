@@ -1,0 +1,17 @@
+{
+    "package": {
+        "name": "pcf-ers-demo1",
+        "repo": "generic",
+        "subject": "mborges-pivotal"
+    },
+
+    "version": {
+        "name": "head"
+    },
+
+    "files":
+        [
+        {"includePattern": "target/(.*\.jar)", "excludePattern": "target/.*\.original", "uploadPattern": "$1"}
+        ],
+    "publish": false
+}
