@@ -2,6 +2,7 @@ language: java
 jdk:
   - oraclejdk8
 script: ./mvnw package -B
+before_deploy: ./ci/travis_beforeDeploy.sh
 deploy:
   provider: bintray
   file: .bintray.desc
