@@ -2,3 +2,5 @@
 .classpath
 .settings
 build/
+.project
+.springBeans
