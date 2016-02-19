@@ -1,12 +1,13 @@
 language: java
 jdk:
 - oraclejdk8
-script: "./mvnw package -B"
-before_deploy: "./ci/travis_beforeDeploy.sh"
+script: ./mvnw package -B
+before_deploy: ./ci/travis_beforeDeploy.sh
 deploy:
   provider: bintray
-  file: ".bintray.desc"
+  file: .bintray.desc
   user: mborges-pivotal
   key:
   secure: YA46mZniYwD05sWtrFdlkhidBxE89nhS3fpO8dfeMwrpH3kuQ8n+ctuPKHWCyrNIEiLPAqdXVRocDeDoTTm//+rQiCeTj/PUPBd7xqDc9lXuKZ2CY+eQ1DjW9P+7nj1Ob+xhoF9wIp2Pvlo1xocdmJOP8h6eRHCQ5Xmmr9UDBz/sAvxwM+haICEYfKR/IR3NvZzX0KiUdgjXEAN8I2C4rhYwLuZWrlZ3wdU0T7U81Pfoy4eAlZe4p/AqOlspvusNT6MBzRBUYP0HRQ4goph0N60kGqLkWuMRAGIc4c+CEpHvyE7UXgAZ4eGg3motAvAUmfQNpsm/sKB0NSubn1vXz+vUtGmpmPtl6KSyT7ha0xA7GUof+j6dQBG0q51H2Zg40cKofHXYTPcVxNMVh/cV9zWm+xzhe+6YqbdMETBtJH71dIIFHIeuwV1fferA7Jg70IquozNoJDmPzSeEx68eq3BtmJjKLSyUQFxJK/Dq+g7qqa8TRLMjnKQW1u28X/gUSyPf73cy2kKjYtLWGy3NnWvAlzMSFOPmy7Esk8s0Rge2VPiQPM5qt+/G+vM//Dv9yv8cCedvtHh2e0vH9RjKlhkW61MJMGakOv9dHy2IbOYyt4bpA2qLkZD/hZy7dqPxWOIOSL4HS6QGKyI77lokAXsVGkk+O79MYY9BEL/GRo4=
-
+  dry-run: false
+  
