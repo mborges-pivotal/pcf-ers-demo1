@@ -1,12 +1,12 @@
 language: java
 jdk:
-  - oraclejdk8
-script: ./mvnw package -B
-before_deploy: ./ci/travis_beforeDeploy.sh
+- oraclejdk8
+script: "./mvnw package -B"
+before_deploy: "./ci/travis_beforeDeploy.sh"
 deploy:
   provider: bintray
-  file: .bintray.desc
+  file: ".bintray.desc"
   user: mborges-pivotal
-  key:
-    secure: afgYEOtRWXJglN7NYq+uAHhKBnIL3nlbm9v5nurf/3ChX1smihWYzEWbhvf1h5A85M2ZhkmJoGbE2KeE76Kju0/gD57LEMBJ6ORWWe1VdY3TfoJOOJ0yhN0FE/1QmtzaNLbZEWg69ZhA5a7Rd0VXDprV2lHobpHKhgwFuPQyiKh91qC90t6vTUXyu6GcubHK+8KtrGVuYPxxPR7HrCwB6x1hRkRC1UlKoH3aiEhYW+GKH2bAgah1DVeL9QnKBfkYyYesmg4Iv1EuUcZI6rYRMZwRhz/tNkBA9RlWSCbgWRmGerqNyI+JfSDSgvvv1tch4AF5gLUSATnUySTmf8r+pqUAbim+qoTuBe4jsOQeCI3K1QtNZSTIR3djCS0lY1mzkmCZEsp4XSs9MiUHtGYVHC/t0sa+RVEqulnN7SzKSs1JVIbG4hsl3+wR/HumEemxgKe36SHjRapbxOQoob3mlkD2Lhv0NuKzAaoh0Gua/9uLVSSkbfTR3jhPGzSqfd1Bj7pBsKaZixsLbjkwelUaGhs0bWBu9Hny+jYBkmCXIPqySHlZkYrIIR7MB/rRuLle5F6wNDIlFSXkI7X5AdWxec+SW7fDadZbwHResE59iJUwMdvPe/ldxHF7V/7Dwp6dCdwuR+tSl5LOiXdKDghxFymZ/55uzjCHTEZofB0qFKw=
   dry-run: false
+deploy-key:
+  secure: YA46mZniYwD05sWtrFdlkhidBxE89nhS3fpO8dfeMwrpH3kuQ8n+ctuPKHWCyrNIEiLPAqdXVRocDeDoTTm//+rQiCeTj/PUPBd7xqDc9lXuKZ2CY+eQ1DjW9P+7nj1Ob+xhoF9wIp2Pvlo1xocdmJOP8h6eRHCQ5Xmmr9UDBz/sAvxwM+haICEYfKR/IR3NvZzX0KiUdgjXEAN8I2C4rhYwLuZWrlZ3wdU0T7U81Pfoy4eAlZe4p/AqOlspvusNT6MBzRBUYP0HRQ4goph0N60kGqLkWuMRAGIc4c+CEpHvyE7UXgAZ4eGg3motAvAUmfQNpsm/sKB0NSubn1vXz+vUtGmpmPtl6KSyT7ha0xA7GUof+j6dQBG0q51H2Zg40cKofHXYTPcVxNMVh/cV9zWm+xzhe+6YqbdMETBtJH71dIIFHIeuwV1fferA7Jg70IquozNoJDmPzSeEx68eq3BtmJjKLSyUQFxJK/Dq+g7qqa8TRLMjnKQW1u28X/gUSyPf73cy2kKjYtLWGy3NnWvAlzMSFOPmy7Esk8s0Rge2VPiQPM5qt+/G+vM//Dv9yv8cCedvtHh2e0vH9RjKlhkW61MJMGakOv9dHy2IbOYyt4bpA2qLkZD/hZy7dqPxWOIOSL4HS6QGKyI77lokAXsVGkk+O79MYY9BEL/GRo4=
