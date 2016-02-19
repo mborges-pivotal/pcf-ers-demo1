@@ -9,7 +9,7 @@ else
 	echo "TRAVIS_BUILD_NUMBER is set to '$TRAVIS_BUILD_NUMBER'"; 
 fi
 
-for file in ./*/target/*.jar; do
+for file in ./target/*.jar; do
 	#extension="${file##*-}"
 	filename="${file%-*}"
 	echo $filename 
