@@ -1,6 +1,7 @@
 package io.pivotal.pcf.sme.ers.client.ui.controller;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,10 +23,10 @@ import io.pivotal.pcf.sme.ers.client.model.PagedAttendees;
 public class AttendeeController {
 
 	private Log log = LogFactory.getLog(AttendeeController.class);
-	
+
 	@Autowired
 	private AttendeeClient attendeeClient;
-	
+
 	@RequestMapping("/")
 	public String index(Model model) throws Exception {
 		for (String key : System.getenv().keySet()) {
@@ -36,7 +37,7 @@ public class AttendeeController {
 
 		return "index";
 	}
-	
+
 	/**
 	 * Action to get a list of all attendees.
 	 * 
@@ -46,20 +47,20 @@ public class AttendeeController {
 	 */
 	@HystrixCommand(fallbackMethod = "defaultAttendees")
 	@RequestMapping(value = "/list-attendees", method = RequestMethod.GET)
-	public String attendees(Model model) throws Exception{
+	public String attendees(Model model) throws Exception {
 
 		PagedAttendees attendees = attendeeClient.getAttendees();
-		
+
 		model.addAttribute("attendees", attendees);
 		addAppInstanceIndex(model);
-		return "attendees";	
+		return "attendees";
 	}
-	
+
 	public String defaultAttendees(Model model) throws Exception {
 		addAppInstanceIndex(model);
-		return "attendees";			
+		return "attendees";
 	}
-	
+
 	/**
 	 * Action to got the the add attendee page
 	 * 
@@ -89,22 +90,40 @@ public class AttendeeController {
 		attendee.setFirstName(firstName);
 		attendee.setLastName(lastName);
 		attendee.setEmailAddress(emailAddress);
-		
+
 		attendeeClient.add(attendee);
 
 		return attendees(model);
-	}	
-	
+	}
+
 	/**
 	 * Action to initiate shutdown of the system. In CF, the application
 	 * <em>should</em> restart. In other environments, the application runtime
 	 * will be shut down.
+	 * 
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/kill", method = RequestMethod.GET)
-	public void kill() {
+	public String kill(Model model) throws Exception {
 
 		log.warn("*** The system is shutting down. ***");
-		System.exit(0);
+		addAppInstanceIndex(model);
+
+		Runnable killTask = () -> {
+		    try {
+		        String name = Thread.currentThread().getName();
+		        log.warn("killing shortly " + name);
+		        TimeUnit.SECONDS.sleep(5);
+		        log.warn("killed " + name);
+				System.exit(0);
+		    }
+		    catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
+		};
+		new Thread(killTask).start();
+
+		return "kill";
 
 	}
 
@@ -120,11 +139,11 @@ public class AttendeeController {
 	public String searchAttendees(@RequestParam("firstName") String firstName, Model model) throws Exception {
 
 		PagedAttendees attendees = attendeeClient.searchName(firstName);
-		
+
 		model.addAttribute("attendees", attendees);
-		return "fragments/list :: attendeeList";	
+		return "fragments/list :: attendeeList";
 	}
-	
+
 	/**
 	 * Action to got the the add attendee page
 	 * 
@@ -134,7 +153,7 @@ public class AttendeeController {
 	public String searchAttendees() {
 		return "searchAttendees";
 	}
-	
+
 	///////////////////////////////////////
 	// Helper Methods
 	///////////////////////////////////////
@@ -156,7 +175,7 @@ public class AttendeeController {
 		if (instanceAddr == null) {
 			instanceAddr = "running locally";
 		}
-		
+
 		model.addAttribute("instanceIndex", instanceIndex);
 		model.addAttribute("instanceAddr", instanceAddr);
 	}
