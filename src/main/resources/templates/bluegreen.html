@@ -35,22 +35,15 @@
 
 	<div class="row">
 		<div class="large-12 columns">
+			<h3 style="color: #01786E">Blue and Green Deployment</h3>
+			<hr />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="large-12 columns">
 			<div class="panel">
-				<h4>Hello Pivotal CF</h4>
-				<br />
-				<p>
-					The instance index is <b th:text="${instanceIndex}"></b>
-				</p>
-				<p>
-					The instance address is <b th:text="${instanceAddr}"></b>
-				</p>
-
-				<div id="resultsBlock-health"></div>
-
-				<div id="resultsBlock-info"></div>
-
 				<div id="bluegreenBlock"></div>
-
 			</div>
 			<hr />
 		</div>
@@ -58,34 +51,48 @@
 
 	<div class="row">
 		<div class="large-12 columns">
-			<!-- This simply refreshes the page to demonstrate changed (or unchanged) ports -->
-			<a href="javascript:window.location.reload();" class="medium button">Refresh</a>
-			<!-- This link should be changed to the application's kill action -->
-			<a href="kill" class="medium alert button">Kill</a>			
+			<a href="javascript:startTimer();" class="medium button">Start</a>
+			<a href="javascript:stopTimer();" class="medium button">Stop</a>			
 		</div>
 	</div>
 
 
 	<script>
-		$(function() {
-			//$("#resultsBlock-health").load("/health");
 
+		var INTERVAL = 1000
+		var timerID = 0;
+		var versions = {};
+		var startTime;
+
+		function startTimer() {
+			timerID = setInterval(startLoad, INTERVAL);
+		}
+
+		function stopTimer() {
+			if (timerID)
+				clearInterval(timerID);
+		}
+			
+		function startLoad() {
+			
 			$.getJSON('/health', function(health) {
-				$('#resultsBlock-health').html(
-						'<p>The database is <b>' + health.db.database
-								+ '</b></p>');
+				
+				if (health.db.database in versions) {
+					versions[health.db.database] =  1 + versions[health.db.database];
+				} else {
+					versions[health.db.database] =  1;					
+				}
+				
+				var html = '';
+				for(var version in versions) {
+					html += '<p>' + version + '<b> = ' + versions[version] + '</b></p>'
+				}
+				
+				
+				$('#bluegreenBlock').html(html);
 			});
-
-			$.getJSON('/info', function(info) {
-				$('#resultsBlock-info').html(
-						'<p>The Artifact is <b>' + info.build.artifact
-								+ '</b></p>');
-				$('#resultsBlock-info').append(
-						'<p>The Version is <b>' + info.build.version
-								+ '</b></p>');
-			});
-
-		});
+		    
+		}
 	</script>
 
 </body>

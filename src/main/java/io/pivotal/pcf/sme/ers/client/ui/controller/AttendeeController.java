@@ -29,14 +29,24 @@ public class AttendeeController {
 
 	@RequestMapping("/")
 	public String index(Model model) throws Exception {
+		
+		addAppInstanceIndex(model);
+		return "index";
+	}
+
+	// Blue and Green
+	@RequestMapping("/bluegreen")
+	public String bluegreen(Model model) throws Exception {
+
 		for (String key : System.getenv().keySet()) {
 			System.out.println(key + ":" + System.getenv(key));
 		}
 
 		addAppInstanceIndex(model);
 
-		return "index";
+		return "bluegreen";
 	}
+
 
 	/**
 	 * Action to get a list of all attendees.
