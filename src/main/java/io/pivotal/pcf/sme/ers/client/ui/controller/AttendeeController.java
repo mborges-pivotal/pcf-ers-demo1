@@ -33,7 +33,7 @@ public class AttendeeController {
 		addAppInstanceIndex(model);
 		return "index";
 	}
-
+	
 	// Blue and Green
 	@RequestMapping("/bluegreen")
 	public String bluegreen(Model model) throws Exception {

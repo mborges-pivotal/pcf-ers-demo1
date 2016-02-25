@@ -1,64 +1,40 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/header :: head">
-<title>EXAMPLE application for PCF</title>
-<link rel="stylesheet" href="css/foundation.css" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head th:replace="fragments/layout :: head">
 </head>
 
 <body>
 
-	<div th:replace="fragments/header :: header">
-		<!-- ============================================================================ -->
-		<!-- This content is only used for static prototyping purposes (natural templates)-->
-		<!-- and is therefore entirely optional, as this markup fragment will be included -->
-		<!-- from "fragments/header.html" at runtime.                                     -->
-		<!-- ============================================================================ -->
-		<nav class="top-bar">
-			<ul class="title-area">
-				<li class="name">
-					<h1>
-						<a href="./">EXAMPLE application for PCF</a>
-					</h1>
-				</li>
-			</ul>
-			<section class="top-bar-section">
-				<ul class="right">
-					<li><a href="./">Home</a></li>
-					<li><a href="list-attendees">Attendees</a></li>
-					<li><a href="env">Show Environment</a></li>
-				</ul>
-			</section>
-		</nav>
-	</div>
+	<nav th:replace="fragments/layout :: navigation"></nav>
+	<div th:replace="fragments/layout :: app-instance"></div>
 
-	<div class="row">
-		<div class="large-12 columns">
-			<h3 style="color: #01786E">Blue and Green Deployment</h3>
-			<hr />
-		</div>
-	</div>
+	<!--  PAGE BODY -->
+	<span id="tutorialName" style="display: none;">bluegreen</span>
 
-	<div class="row">
-		<div class="large-12 columns">
-			<div class="panel">
-				<div id="bluegreenBlock"></div>
+	<div class="container">
+
+		<h2>Blue Green Deployment</h2>
+
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div id="bluegreenBlock"></div>
+				</div>
 			</div>
-			<hr />
+			<div class="panel-footer clearfix">
+				<div class="pull-right">
+					<a href="javascript:startTimer();" class="btn btn-default">Start</a>
+					<a href="javascript:stopTimer();" class="btn btn-default">Stop</a>
+				</div>
+			</div>
 		</div>
-	</div>
 
-	<div class="row">
-		<div class="large-12 columns">
-			<a href="javascript:startTimer();" class="medium button">Start</a>
-			<a href="javascript:stopTimer();" class="medium button">Stop</a>			
-		</div>
-	</div>
+		<div th:replace="fragments/layout :: tutorial"></div>
 
+	</div>
 
 	<script>
-
 		var INTERVAL = 1000
 		var timerID = 0;
 		var versions = {};
@@ -72,29 +48,37 @@
 			if (timerID)
 				clearInterval(timerID);
 		}
-			
+
 		function startLoad() {
-			
-			$.getJSON('/health', function(health) {
-				
-				if (health.db.database in versions) {
-					versions[health.db.database] =  1 + versions[health.db.database];
-				} else {
-					versions[health.db.database] =  1;					
-				}
-				
-				var html = '';
-				for(var version in versions) {
-					html += '<p>' + version + '<b> = ' + versions[version] + '</b></p>'
-				}
-				
-				
-				$('#bluegreenBlock').html(html);
-			});
-		    
+
+			$
+					.getJSON(
+							'/health',
+							function(health) {
+
+								if (health.db.database in versions) {
+									versions[health.db.database] = 1 + versions[health.db.database];
+								} else {
+									versions[health.db.database] = 1;
+								}
+
+								var html = '';
+								for ( var version in versions) {
+									html += '<p>' + version + '<b> = '
+											+ versions[version] + '</b></p>'
+								}
+
+								$('#bluegreenBlock').html(html);
+							});
+
 		}
 	</script>
+
+	<!--  /.PAGE BODY -->
+
+	<script th:replace="fragments/layout :: app-instance-script"></script>
 
 </body>
 
 </html>
+

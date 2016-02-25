@@ -1,68 +1,70 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/header :: head">
-<title>EXAMPLE application for PCF</title>
-<link rel="stylesheet" href="css/foundation.css" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head th:replace="fragments/layout :: head">
 </head>
 
 <body>
 
-	<div th:replace="fragments/header :: header">
-		<!-- ============================================================================ -->
-		<!-- This content is only used for static prototyping purposes (natural templates)-->
-		<!-- and is therefore entirely optional, as this markup fragment will be included -->
-		<!-- from "fragments/header.html" at runtime.                                     -->
-		<!-- ============================================================================ -->
 
-		<nav class="top-bar">
-			<ul class="title-area">
-				<li class="name">
-					<h1>
-						<a href="./">Pivotal CF</a>
-					</h1>
-				</li>
-			</ul>
-		</nav>
-	</div>
+	<nav th:replace="fragments/layout :: navigation"></nav>
+	<div th:replace="fragments/layout :: app-instance"></div>
+
+	<!--  PAGE BODY -->
+	<span id="tutorialName" style="display: none;">services</span>
+
+	<div class="container">
+
+		<h2>Services</h2>
 
 
-	<div class="row">
-		<div class="large-12 columns">
-			<h3>Search Attendees</h3>
-			<hr />
+		<div class="panel panel-default">
+			<div class="panel-body">
+
+				<div class="row">
+					<div class="input">
+						Search by First Name: <input type="text" id="searchFirstName"
+							name="firstName" />
+					</div>
+				</div>
+
+				<div th:replace="fragments/list :: attendeeList">
+					<p>Attendees Table</p>
+				</div>
+			</div>
+
+			<div class="panel-footer clearfix">
+				<div class="pull-right">
+					<div class="row">
+						<a href="list-attendees" class="btn btn-default">Cancel</a> <a
+							href="javascript:retrieveAttendees()" class="btn btn-default">Search</a>
+					</div>
+				</div>
+			</div>
 		</div>
+
+		<div id="resultsBlock"></div>
+
+		<div th:replace="fragments/layout :: tutorial"></div>
+
 	</div>
 
-	<div class="row">
-		<div class="input">
-			Search by First Name: <input type="text" id="searchFirstName"
-				name="firstName" />
-			<button id="searchButton" name="searchButton"
-				onclick="retrieveAttendees()" type="button">Search</button>
-				<a href="list-attendees"
-					class="medium button">Cancel</a>
-		</div>
-	</div>
-	
-	<div id="resultsBlock">
-	
-	</div>
-	
 	<script>
-	function retrieveAttendees() {
-	    var url = '/search-attendees-fn';
-	    
-	    if ($('#searchFirstName').val() != '') {
-	        url = url + '?firstName=' + $('#searchFirstName').val();
-	    }
-	    
-	    $("#resultsBlock").load(url);
-	}
+		function retrieveAttendees() {
+			var url = '/search-attendees-fn';
+
+			if ($('#searchFirstName').val() != '') {
+				url = url + '?firstName=' + $('#searchFirstName').val();
+			}
+
+			$("#resultsBlock").load(url);
+		}
 	</script>
 
-</body>
+	<!--  /.PAGE BODY -->
 
+	<script th:replace="fragments/layout :: app-instance-script"></script>
+
+</body>
 
 </html>
