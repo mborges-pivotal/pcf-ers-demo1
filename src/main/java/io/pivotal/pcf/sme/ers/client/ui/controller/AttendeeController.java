@@ -114,25 +114,28 @@ public class AttendeeController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/kill", method = RequestMethod.GET)
-	public String kill(Model model) throws Exception {
+	public String kill(@RequestParam( value="doit", required=false) boolean doit, Model model) throws Exception {
 
-		log.warn("*** The system is shutting down. ***");
 		addAppInstanceIndex(model);
 
-		Runnable killTask = () -> {
-		    try {
-		        String name = Thread.currentThread().getName();
-		        log.warn("killing shortly " + name);
-		        TimeUnit.SECONDS.sleep(5);
-		        log.warn("killed " + name);
-				System.exit(0);
-		    }
-		    catch (InterruptedException e) {
-		        e.printStackTrace();
-		    }
-		};
-		new Thread(killTask).start();
-
+		if (doit) {
+			model.addAttribute("killed", true);
+			log.warn("*** The system is shutting down. ***");
+			Runnable killTask = () -> {
+			    try {
+			        String name = Thread.currentThread().getName();
+			        log.warn("killing shortly " + name);
+			        TimeUnit.SECONDS.sleep(5);
+			        log.warn("killed " + name);
+					System.exit(0);
+			    }
+			    catch (InterruptedException e) {
+			        e.printStackTrace();
+			    }
+			};
+			new Thread(killTask).start();
+		}
+		
 		return "kill";
 
 	}

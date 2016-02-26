@@ -8,30 +8,48 @@
 
 	<nav th:replace="fragments/layout :: navigation"></nav>
 
-	<div th:replace="fragments/layout :: app-instance"></div>
-
 	<!--  PAGE BODY -->
-	<span id="tutorialName" style="display: none;">kill</span>
+	<div class="container" role="main">
 
-	<div class="container">
-	
-		<h2>Self Healing</h2>
-	
+		<span id="tutorialName" style="display: none;">kill</span>
+
+		<div class="page-header">
+			<p>&nbsp;</p>
+			<h1>Self Healing</h1>
+		</div>
+
 		<div class="row">
-			<div class="panel panel-default">
+			<div th:if="${killed}" class="panel panel-default">
 				<div class="panel-body">
-					<p>Killed Application Instance Task executed. Good luck if you're not running in PCF :-)</p>
-					<p>Make sure you don't click of <i><b>Refresh</b></i> button you'll kill another application instance!</p>
+					<p>Killed Application Instance Task executed. Good luck if
+						you're not running in PCF :-)</p>
+					<p>
+						Make sure you don't click of <i><b>Refresh</b></i> button you'll
+						kill another application instance!
+					</p>
+				</div>
+			</div>
+			<div th:if="${killed} == null" class="panel panel-default">
+				<div class="panel-body">
+					<p>Kill the Application Instance. Good luck if you're not
+						running in PCF :-)</p>
+				</div>
+				<div class="panel-footer clearfix">
+					<div class="pull-right">
+						<a href="/kill?doit=true" class="btn btn-danger">Kill</a>
+					</div>
 				</div>
 			</div>
 		</div>
-		
+
 		<div th:replace="fragments/layout :: tutorial"></div>
 
 	</div>
 	<!--  /.PAGE BODY -->
 
+	<div th:replace="fragments/layout :: app-instance"></div>
 	<script th:replace="fragments/layout :: app-instance-script"></script>
+
 </body>
 
 </html>

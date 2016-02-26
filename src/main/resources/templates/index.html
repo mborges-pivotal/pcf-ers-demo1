@@ -7,20 +7,22 @@
 <body>
 
 	<nav th:replace="fragments/layout :: navigation"></nav>
-	<div th:replace="fragments/layout :: app-instance"></div>
 
 	<!--  PAGE BODY -->
-	<span id="tutorialName" style="display: none;">index</span>
-		
-	<div class="container">
-	
-		<h2>PCF ERS Application</h2>
-		
+	<div class="container" role="main">
+
+		<span id="tutorialName" style="display: none;">index</span>
+
+		<div class="page-header">
+			<p>&nbsp;</p>
+			<h1>Welcome to the Cloud Foundry Demo!</h1>
+		</div>		
 		<div th:replace="fragments/layout :: tutorial"></div>
 		
 	</div>
 	<!--  /.PAGE BODY -->
 
+	<div th:replace="fragments/layout :: app-instance"></div>
 	<script th:replace="fragments/layout :: app-instance-script"></script>
 
 </body>
