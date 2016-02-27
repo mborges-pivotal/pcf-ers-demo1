@@ -3,6 +3,10 @@ spring.h2.console.enabled: true
 
 logging.level.io.pivotal.pcf.sme.erc.client: DEBUG
 
+spring:
+  thymeleaf:
+    cache: false
+
 # Used by Feign without Eureka - expect the server to run along with client
 attendees:
   ribbon:

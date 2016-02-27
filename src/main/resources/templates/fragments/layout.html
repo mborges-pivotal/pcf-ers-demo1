@@ -1,14 +1,19 @@
+<!--
+This page contains thymeleaf fragments used by all pages in the application 
+
+References:
+- http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system.php
+ 
+-->
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<!-- 
-http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system.php
- -->
 
 <head th:fragment="head">
 
 <title>PCF Sample App</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta HTTP-EQUIV="Pragma" CONTENT="no-cache" />
+<meta HTTP-EQUIV="Expires" CONTENT="-1" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -36,10 +41,29 @@ http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system
 .dropdown-toggle {
 	color: #04050b;
 }
-</style>
- 
-</head>
 
+.table-fixed thead {
+	width: 97%;
+}
+
+.table-fixed tbody {
+	height: 220px;
+	overflow-y: auto;
+	width: 100%;
+}
+
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td,
+	.table-fixed th {
+	display: block;
+}
+
+.table-fixed tbody td, .table-fixed thead>tr>th {
+	float: left;
+	border-bottom-width: 0;
+}
+</style>
+
+</head>
 
 
 <body>
@@ -65,8 +89,8 @@ http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="kill">Self Healing</a></li>
-					<li><a href="list-attendees">Services</a></li>
+					<li><a href="basics">Basics</a></li>
+					<li><a href="services">Services</a></li>
 					<li><a href="bluegreen">Blue Green</a></li>
 
 					<li class="dropdown"><a data-toggle="dropdown"
@@ -84,40 +108,45 @@ http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system
 		<!-- /.container -->
 	</nav>
 
-	<!-- ++++++++++++++++++++++++++++++ -->
-	<!-- App Instance Information Panel -->
-	<!-- ++++++++++++++++++++++++++++++ -->
 
-	<div th:fragment="app-instance" class="container">
-		<div class="row">
+	<!-- ++++++++++++++++++++++ -->
+	<!-- Tutorial & App Env Inf -->
+	<!-- ++++++++++++++++++++++ -->
+	<div th:fragment="tutorial" class="row">
+		<div id="accordion" class="panel-group">
 			<div class="panel panel-default">
-				<div class="panel-body">
-					<h4>Application Instance Information</h4>
-					<br />
-					<p>
-						The instance index is <b th:text="${instanceIndex}"></b>
-					</p>
-					<p>
-						The instance address is <b th:text="${instanceAddr}"></b>
-					</p>
-
-					<div id="resultsBlock-health"></div>
-					<div id="resultsBlock-info"></div>
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion"
+							href="#collapseZero">Application Environment Information</a>
+					</h4>
 				</div>
-				<div class="panel-footer clearfix">
-					<div class="pull-right">
-						<a href="javascript:window.location.reload();"
-							class="btn btn-default">Refresh</a>
+				<div id="collapseZero" class="panel-collapse collapse in">
+					<div class="panel-body">
+						<p>
+							Application Name <b
+								th:text="*{applicationName}?: 'running locally'"></b>
+						</p>
+						<p>
+							The instance index is <b th:text="${instanceIndex}"></b>
+						</p>
+						<p>
+							The instance address is <b th:text="${instanceAddr}"></b>
+						</p>
+
+						<h4>Services</h4>
+						<p th:if="${applicationServices.isEmpty()}">Using embedded DB</p>
+						<p th:each="instance : ${applicationServices}">
+							<b><span th:text="${instance.key}">keyvalue</span></b>
+							<span th:text="${instance.value}">num</span>
+							<br/>
+						</p>
+
+						<div id="resultsBlock-health"></div>
+						<div id="resultsBlock-info"></div>
 					</div>
 				</div>
 			</div>
-
-		</div>
-	</div>
-
-	<!-- Tutorial -->
-	<div th:fragment="tutorial" class="row">
-		<div id="accordion" class="panel-group">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">
@@ -125,7 +154,7 @@ http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system
 							href="#collapseOne">1. Description</a>
 					</h4>
 				</div>
-				<div id="collapseOne" class="panel-collapse collapse in">
+				<div id="collapseOne" class="panel-collapse collapse">
 					<div id="description" class="panel-body">
 						<p>DESCRIPTION NOT AVAILABLE</p>
 					</div>
@@ -164,6 +193,7 @@ http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system
 
 			//$("#resultsBlock-health").load("/health");
 
+			/**
 			$.getJSON('/health', function(health) {
 				$('#resultsBlock-health').html(
 						'<p>The database is <b>' + health.db.database
@@ -178,6 +208,7 @@ http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system
 						'<p>The Version is <b>' + info.build.version
 								+ '</b></p>');
 			});
+			 */
 
 		});
 	</script>
