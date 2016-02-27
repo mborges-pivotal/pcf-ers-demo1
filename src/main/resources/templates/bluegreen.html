@@ -25,6 +25,7 @@
 						<p>Shows the load balancing between versions based on route
 							mappings</p>
 					</div>
+					<div id="donut-example" style="height: 250px;"></div>
 				</div>
 				<div class="panel-footer clearfix">
 					<div class="pull-right">
@@ -44,6 +45,20 @@
 		var timerID = 0;
 		var versions = {};
 		var startTime;
+
+		var chartData = [ {
+			label : "blue",
+			value : 10
+		}, {
+			label : "green",
+			value : 1
+		} ]
+
+		var chart = Morris.Donut({
+			element : 'donut-example',
+			colors: [ "#90A6D4", "#90D49C"],
+			data : chartData
+		});
 
 		function startTimer() {
 			timerID = setInterval(startLoad, INTERVAL);
@@ -68,10 +83,20 @@
 								}
 
 								var html = '';
+								
+								chartData = [];
+								
 								for ( var version in versions) {
 									html += '<p>' + version + '<b> = '
 											+ versions[version] + '</b></p>'
+
+									item = {};
+									item.label = version;
+									item.value = versions[version];
+									chartData.push(item);
 								}
+
+								chart.setData(chartData);
 
 								$('#bluegreenBlock').html(html);
 							});
