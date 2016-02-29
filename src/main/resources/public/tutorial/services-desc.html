@@ -1,0 +1,18 @@
+
+<p>In this page we can exercise how application in PCF can use
+	services. By default the applications uses H2 as an embedded database
+	but it auto detects and uses any PCF database bound to it.</p>
+
+<div class="alert alert-warning" role="alert">
+	<p><b>Warning!</b> Because it uses an embedded database, when running on PCF make
+		sure you bind a database service when running more then one
+		application instances. Since PCF load balances the requests, the results of the database interactions will be unpredictable. </p>
+</div>
+<p>
+Below are things we'll demonstrate.
+</p>
+<ul>
+	<li>Create and Bind Services by using PCF Marketplace</li>
+	<li>Auto Scaling Services</li>
+	<li>User Provided Services - TDB </li>
+</ul>

@@ -1,5 +1,6 @@
 package io.pivotal.pcf.sme.ers.client.ui.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -27,14 +28,26 @@ public class AttendeeController {
 	@Autowired
 	private AttendeeClient attendeeClient;
 
+	/**
+	 * INDEX
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/")
 	public String index(Model model) throws Exception {
-		
-		addAppInstanceIndex(model);
+		addAppEnv(model);
 		return "index";
 	}
 
-	// Blue and Green
+	/**
+	 * BLUEGREEN
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/bluegreen")
 	public String bluegreen(Model model) throws Exception {
 
@@ -42,47 +55,37 @@ public class AttendeeController {
 			System.out.println(key + ":" + System.getenv(key));
 		}
 
-		addAppInstanceIndex(model);
+		addAppEnv(model);
 
 		return "bluegreen";
 	}
 
-
 	/**
-	 * Action to get a list of all attendees.
+	 * SERVICES
 	 * 
 	 * @param model
 	 *            The model for this action.
 	 * @return The path to the view.
 	 */
 	@HystrixCommand(fallbackMethod = "defaultAttendees")
-	@RequestMapping(value = "/list-attendees", method = RequestMethod.GET)
+	@RequestMapping(value = "/services", method = RequestMethod.GET)
 	public String attendees(Model model) throws Exception {
 
 		PagedAttendees attendees = attendeeClient.getAttendees();
 
 		model.addAttribute("attendees", attendees);
-		addAppInstanceIndex(model);
-		return "attendees";
+		addAppEnv(model);
+		return "services";
 	}
 
+	// hystrix fallback
 	public String defaultAttendees(Model model) throws Exception {
-		addAppInstanceIndex(model);
-		return "attendees";
+		addAppEnv(model);
+		return "services";
 	}
 
 	/**
-	 * Action to got the the add attendee page
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/add-attendee", method = RequestMethod.GET)
-	public String addAttendee() {
-		return "addAttendee";
-	}
-
-	/**
-	 * Action to add attendee
+	 * SERVICES - Add Attendee
 	 * 
 	 * @param firstName
 	 * @param lastName
@@ -107,33 +110,37 @@ public class AttendeeController {
 	}
 
 	/**
+	 * BASICS
+	 * 
 	 * Action to initiate shutdown of the system. In CF, the application
 	 * <em>should</em> restart. In other environments, the application runtime
 	 * will be shut down.
 	 * 
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/kill", method = RequestMethod.GET)
-	public String kill(Model model) throws Exception {
+	@RequestMapping(value = "/basics", method = RequestMethod.GET)
+	public String kill(@RequestParam(value = "doit", required = false) boolean doit, Model model) throws Exception {
 
-		log.warn("*** The system is shutting down. ***");
-		addAppInstanceIndex(model);
+		addAppEnv(model);
 
-		Runnable killTask = () -> {
-		    try {
-		        String name = Thread.currentThread().getName();
-		        log.warn("killing shortly " + name);
-		        TimeUnit.SECONDS.sleep(5);
-		        log.warn("killed " + name);
-				System.exit(0);
-		    }
-		    catch (InterruptedException e) {
-		        e.printStackTrace();
-		    }
-		};
-		new Thread(killTask).start();
+		if (doit) {
+			model.addAttribute("killed", true);
+			log.warn("*** The system is shutting down. ***");
+			Runnable killTask = () -> {
+				try {
+					String name = Thread.currentThread().getName();
+					log.warn("killing shortly " + name);
+					TimeUnit.SECONDS.sleep(5);
+					log.warn("killed " + name);
+					System.exit(0);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			};
+			new Thread(killTask).start();
+		}
 
-		return "kill";
+		return "basics";
 
 	}
 
@@ -154,52 +161,54 @@ public class AttendeeController {
 		return "fragments/list :: attendeeList";
 	}
 
-	/**
-	 * Action to got the the add attendee page
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/search-attendees", method = RequestMethod.GET)
-	public String searchAttendees() {
-		return "searchAttendees";
-	}
-
 	///////////////////////////////////////
 	// Helper Methods
 	///////////////////////////////////////
 
-	private void addAppInstanceIndex(Model model) throws Exception {
+	@SuppressWarnings("unchecked")
+	private void addAppEnv(Model model) throws Exception {
 
-		String instanceIndex = System.getenv("CF_INSTANCE_INDEX");
-
-		if (instanceIndex == null) {
-			log.info("No CF_INSTANCE_INDEX, going to VCAP_APPLICATION");
-			if (getVCAPMap() != null) {
-				instanceIndex = Integer.toString((Integer) getVCAPMap().get("instance_index"));
-			} else {
-				instanceIndex = "no index environment variable";
-			}
-		}
+		String instanceIndex = getVcapApplicationMap().getOrDefault("instance_index", "no index environment variable").toString();
+		model.addAttribute("instanceIndex", instanceIndex);
 
 		String instanceAddr = System.getenv("CF_INSTANCE_ADDR");
 		if (instanceAddr == null) {
 			instanceAddr = "running locally";
 		}
-
-		model.addAttribute("instanceIndex", instanceIndex);
 		model.addAttribute("instanceAddr", instanceAddr);
+
+		String applicationName = (String)getVcapApplicationMap().getOrDefault("application_name", "no name environment variable");
+		model.addAttribute("applicationName", applicationName);
+
+		@SuppressWarnings("rawtypes")
+		Map services = getVcapServicesMap();
+		model.addAttribute("applicationServices", services);
+
 	}
 
 	@SuppressWarnings("rawtypes")
-	private Map getVCAPMap() throws Exception {
-		String vcapApplication = System.getenv("VCAP_APPLICATION");
+	private Map getVcapApplicationMap() throws Exception {
+		return getEnvMap("VCAP_APPLICATION");
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private Map getVcapServicesMap() throws Exception {
+		return getEnvMap("VCAP_SERVICES");
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private Map getEnvMap(String vcap) throws Exception {
+		String vcapEnv = System.getenv(vcap);
 		ObjectMapper mapper = new ObjectMapper();
-		if (vcapApplication != null) {
-			Map vcapMap = mapper.readValue(vcapApplication, Map.class);
+
+		if (vcapEnv != null) {
+			Map<String, ?> vcapMap = mapper.readValue(vcapEnv, Map.class);
 			return vcapMap;
 		}
 
-		return null;
+		log.warn(vcap + " not defined, returning empty Map");
+		return new HashMap<String, String>();
 	}
+
 
 }
