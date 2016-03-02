@@ -22,9 +22,15 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div id="bluegreenBlock">
-						<p>Shows the load balancing between application versions based on route
-							mappings. <a data-toggle="collapse" data-parent="#accordion"
-							href="#collapseOne">Learn more - Description</a></p>
+						<p>How hard it is for you to upgrade your application with
+							minimal downtime?</p>
+						<p>
+							This page shows the load balancing between application versions
+							based on route mappings. In our basics page we discussed the
+							concept of routes and how they can be mapped to many application
+							deployments. <a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne">Learn more - Description</a>
+						</p>
 					</div>
 					<div id="donut-example" style="height: 250px;"></div>
 				</div>
@@ -46,7 +52,7 @@
 		var timerID = 0;
 		var versions = {};
 		var startTime;
-		
+
 		var colors = [ "#90A6D4", "#90D49C" ];
 
 		var chartData = [ {
@@ -90,10 +96,11 @@
 				// MMB: This can be templated instead of creating HTML in the function
 				var i = 2;
 				for ( var version in versions) {
-					html += '<p><b><span style="color:' + colors[i%2] + '">' + version + '</span></b></p>'
+					html += '<p><b><span style="color:' + colors[i % 2] + '">'
+							+ version + '</span></b> - '+ versions[version] +'</p>'
 
 					i++;
-					
+
 					item = {};
 					item.label = version;
 					item.value = versions[version];

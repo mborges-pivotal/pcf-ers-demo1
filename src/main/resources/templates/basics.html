@@ -19,6 +19,12 @@
 		</div>
 
 		<div class="row">
+			<p>Ok, you have the application running. Now let's understand
+				some of the basic capabilities you get to every application in PCF.</p>
+			
+		</div>
+		
+		<div class="row">
 			<div th:if="${killed}" class="panel panel-default">
 				<div class="panel-body">
 					<p>
@@ -45,13 +51,6 @@
 			</div>
 			<div th:if="${killed} == null" class="panel panel-default">
 				<div class="panel-body">
-					<p>In this page we can exercise the basic capabilities of
-						Pivotal Elastic Runtime.</p>
-					<ul>
-						<li>High availability</li>
-						<li>Scaling from 1 to 10 in seconds</li>
-						<li>Health monitoring and auto-healing</li>
-					</ul>
 					<div class="alert alert-danger" role="alert">
 						<b>Attention!</b> Before clicking on <i><b>kill</b></i> you may
 						want to ensure you have at least 2 application instances (HA)
