@@ -33,6 +33,9 @@ import com.netflix.loadbalancer.ServerList;
  * services.
  *
  * This is only used in the "cloud" profile
+ * 
+ * TODO:
+ * - Datasource is used by the microservices and RibbonClient by ui. We need to separate.
  *
  *
  * References - Will remove once code is all well documented.
