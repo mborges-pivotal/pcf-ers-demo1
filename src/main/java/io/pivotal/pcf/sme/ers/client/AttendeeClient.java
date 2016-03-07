@@ -22,6 +22,9 @@ public interface AttendeeClient {
 	@RequestMapping(method = RequestMethod.GET, value = "/attendees/search/nameContains?q={firstName}")
 	PagedAttendees searchName(@PathVariable("firstName") String firstName);
 
+	@RequestMapping(method = RequestMethod.GET, value = "/attendees")
+	PagedAttendees findAll();
+
 	/////////////////////
 
 	/**
@@ -29,6 +32,6 @@ public interface AttendeeClient {
 	 * @return HATEOS Resources with Attendee contents
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/attendees")
-	PagedResources<Resource<Attendee>> findAll();
+	PagedResources<Resource<Attendee>> findAllResources();
 
 }

@@ -13,37 +13,46 @@
 
 		<span id="tutorialName" style="display: none;">bluegreen</span>
 
-		<div class="page-header">
-			<p>&nbsp;</p>
-			<h1>Blue Green Deployment</h1>
-		</div>
-
-		<div class="row">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<div id="bluegreenBlock">
-						<p>How hard it is for you to upgrade your application with
-							minimal downtime?</p>
-						<p>
-							This page shows the load balancing between application versions
-							based on route mappings. In our basics page we discussed the
-							concept of routes and how they can be mapped to many application
-							deployments. <a data-toggle="collapse" data-parent="#accordion"
-								href="#collapseOne">Learn more - Description</a>
-						</p>
-					</div>
-					<div id="donut-example" style="height: 250px;"></div>
-				</div>
-				<div class="panel-footer clearfix">
-					<div class="pull-right">
-						<a href="javascript:startTimer();" class="btn btn-default">Start</a>
-						<a href="javascript:stopTimer();" class="btn btn-default">Stop</a>
-					</div>
-				</div>
+		<div class="row ">
+			<div class="page-header">
+				<p>&nbsp;</p>
+				<h1>Blue Green Deployment</h1>
 			</div>
 		</div>
 
-		<div th:replace="fragments/layout :: tutorial"></div>
+		<div class="row ">
+
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div id="bluegreenBlock">
+							<p>How hard it is for you to upgrade your application with
+								minimal downtime?</p>
+							<p>
+								This page shows the load balancing between application versions
+								based on route mappings. In our basics page we discussed the
+								concept of routes and how they can be mapped to many application
+								deployments. <a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseOne">Learn more - Description</a>
+							</p>
+						</div>
+						<div id="donut-example" style="height: 250px;"></div>
+					</div>
+					<div class="panel-footer clearfix">
+						<div class="pull-right">
+							<a href="javascript:startTimer();" class="btn btn-default">Start</a>
+							<a href="javascript:stopTimer();" class="btn btn-default">Stop</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div th:replace="fragments/layout :: tutorial"></div>
+			</div>
+
+		</div>
+		<!--  ROW -->
 
 	</div>
 
@@ -97,7 +106,8 @@
 				var i = 2;
 				for ( var version in versions) {
 					html += '<p><b><span style="color:' + colors[i % 2] + '">'
-							+ version + '</span></b> - '+ versions[version] +'</p>'
+							+ version + '</span></b> - ' + versions[version]
+							+ '</p>'
 
 					i++;
 
@@ -117,7 +127,9 @@
 
 	<!--  /.PAGE BODY -->
 
-	<div th:replace="fragments/layout :: app-instance"></div>
+	<footer th:replace="fragments/layout :: footer" class="footer">
+	</footer>
+
 	<script th:replace="fragments/layout :: app-instance-script"></script>
 
 </body>

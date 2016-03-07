@@ -92,7 +92,7 @@ References:
 				<a class="navbar-brand" href="./"><img
 					src="/images/icon_cf_green.png"
 					style="width: 40px; height: 40px; margin-top: -15px;" />&nbsp;
-					Cloud Foundry Demo</a>
+					Cloud Foundry Basic Demo</a>
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse"
@@ -121,8 +121,8 @@ References:
 	<!-- ++++++++++++++++++++++ -->
 	<!-- Tutorial & App Env Inf -->
 	<!-- ++++++++++++++++++++++ -->
-	<div th:fragment="tutorial" class="row">
-		<div id="accordion" class="panel-group">
+	<div class="row">
+		<div th:fragment="tutorial" id="accordion" class="panel-group">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">
@@ -144,7 +144,8 @@ References:
 						</p>
 
 						<h4>Services</h4>
-						<p th:if="${applicationServices.isEmpty()}">Using embedded H2 DB</p>
+						<p th:if="${applicationServices.isEmpty()}">Using embedded H2
+							DB</p>
 						<p th:each="instance : ${applicationServices}">
 							<b><span th:text="${instance.key}">keyvalue</span></b> <span
 								th:text="${instance.value}">num</span> <br />
@@ -182,8 +183,17 @@ References:
 				</div>
 			</div>
 		</div>
+
 	</div>
 
+	<!-- ++++++ -->
+	<!-- FOOTER -->
+	<!-- ++++++ -->
+	<footer th:fragment="footer" class="footer">
+		<div class="container">
+			<p class="text-muted">Provided to you by Pivotal!</p>
+		</div>
+	</footer>
 
 	<!-- Scripts -->
 	<script th:fragment="app-instance-script">

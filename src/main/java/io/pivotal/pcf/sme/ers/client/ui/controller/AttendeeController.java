@@ -118,6 +118,9 @@ public class AttendeeController {
 	 * NOTE: this method chains (calls) the "attendees" method so it returns the
 	 * services template with the updated attendees list.
 	 * 
+	 * TODO:
+	 * - Turn this this into REST call
+	 * 
 	 * @param firstName
 	 * @param lastName
 	 * @param emailAddress
@@ -137,8 +140,8 @@ public class AttendeeController {
 
 		attendeeClient.add(attendee);
 
-		// MMB: chaining methods - IMHO, this is confusing so think about fixing it.
-		return attendees(model);
+		addAppEnv(model);
+		return "services";
 	}
 
 	/**
@@ -154,9 +157,14 @@ public class AttendeeController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/search-attendees-fn", method = RequestMethod.GET)
-	public String searchAttendees(@RequestParam("firstName") String firstName, Model model) throws Exception {
+	public String searchAttendees(@RequestParam( value="firstName", required = false) String firstName, Model model) throws Exception {
 
-		PagedAttendees attendees = attendeeClient.searchName(firstName);
+		PagedAttendees attendees = null;
+		if (firstName == null) {
+			attendees = attendeeClient.findAll();			
+		} else {
+			attendees = attendeeClient.searchName(firstName);
+		}
 
 		model.addAttribute("attendees", attendees);
 		return "fragments/list :: attendeeList";
