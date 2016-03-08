@@ -40,8 +40,10 @@
 					</div>
 					<div class="panel-footer clearfix">
 						<div class="pull-right">
-							<a href="javascript:startTimer();" class="btn btn-default">Start</a>
-							<a href="javascript:stopTimer();" class="btn btn-default">Stop</a>
+							<a href="/bluegreen"
+								class="btn btn-default">Reset</a>
+							<a id="loadButton" href="javascript:toggleTimer();"
+								class="btn btn-default">Start Simulation</a>
 						</div>
 					</div>
 				</div>
@@ -60,9 +62,18 @@
 		var INTERVAL = 1000
 		var timerID = 0;
 		var versions = {};
-		var startTime;
 
 		var colors = [ "#90A6D4", "#90D49C" ];
+
+		function toggleTimer() {
+			if (timerID == 0) {
+				startTimer();
+				$('#loadButton').text("Stop Simulation");
+			} else {
+				stopTimer();
+				$('#loadButton').text("Start Simulation");
+			}
+		}
 
 		var chartData = [ {
 			label : "blue",
@@ -84,13 +95,17 @@
 		}
 
 		function stopTimer() {
-			if (timerID)
+			if (timerID) {
 				clearInterval(timerID);
+				timerID = 0;
+			}
 		}
 
 		function startLoad() {
 
-			$.get("/bluegreen-check", function(appName) {
+			$.get("/bluegreen-check", function(appEnv) {
+
+				var appName = appEnv[0]
 
 				if (appName in versions) {
 					versions[appName] = 1 + versions[appName];

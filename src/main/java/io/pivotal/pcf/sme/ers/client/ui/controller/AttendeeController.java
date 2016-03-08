@@ -95,6 +95,21 @@ public class AttendeeController {
 		addAppEnv(model);
 		return "services";
 	}
+	
+	/**
+	 * SERVICES - clean DB
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/clean", method = RequestMethod.GET)
+	public String clean(Model model) throws Exception {
+
+		attendeeService.deleteAll();
+		return attendees(model);
+	}
+	
 
 	/**
 	 * SERVICES - Add Attendee

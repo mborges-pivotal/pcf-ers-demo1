@@ -1,6 +1,8 @@
 package io.pivotal.pcf.sme.ers.client.ui.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -33,7 +35,7 @@ public class AttendeeService {
 
 	private Log log = LogFactory.getLog(AttendeeService.class);
 	
-	/// Polluting with server code
+	/// Polluting with server code (Attendee Model Object)
 	// http://blog.zenika.com/2012/06/15/hateoas-paging-with-spring-mvc-and-spring-data-jpa/
 	
 	@Autowired
@@ -45,6 +47,10 @@ public class AttendeeService {
 		a2.setLastName(a1.getLastName());
 		a2.setEmailAddress(a1.getEmailAddress());
 		attendeeRepository.saveAndFlush(a2);
+	}
+	
+	void deleteAll() {
+		attendeeRepository.deleteAll();
 	}
 	
 	// returning server object
@@ -69,8 +75,13 @@ public class AttendeeService {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/bluegreen-check")
-	public String bluegreenRequest() throws Exception {
-		return (String) getVcapApplicationMap().getOrDefault("application_name", "no name environment variable");
+	public String[] bluegreenRequest() throws Exception {
+		
+		List<String> values = new ArrayList<String>();
+		values.add((String) getVcapApplicationMap().getOrDefault("application_name", "no name environment variable"));
+		values.add(getVcapApplicationMap().getOrDefault("instance_index", "running locally").toString());
+		
+		return values.toArray(new String[0]);
 	}
 
 	/**
