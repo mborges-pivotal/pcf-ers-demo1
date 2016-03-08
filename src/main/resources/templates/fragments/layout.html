@@ -53,7 +53,7 @@ References:
 }
 
 .table-fixed tbody {
-	height: 220px;
+	height: 190px;
 	overflow-y: auto;
 	width: 100%;
 }
@@ -137,10 +137,10 @@ References:
 								th:text="*{applicationName}?: 'running locally'"></b>
 						</p>
 						<p>
-							The instance index is <b th:text="${instanceIndex}"></b>
+							The instance index is <b id="instanceIndex" th:text="${instanceIndex}"></b>
 						</p>
 						<p>
-							The instance address is <b th:text="${instanceAddr}"></b>
+							The instance address is <b id="instanceAddress" th:text="${instanceAddr}"></b>
 						</p>
 
 						<h4>Services</h4>

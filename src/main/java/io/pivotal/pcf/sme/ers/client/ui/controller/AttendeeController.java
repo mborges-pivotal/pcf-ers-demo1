@@ -12,11 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-
-import io.pivotal.pcf.sme.ers.client.AttendeeClient;
 import io.pivotal.pcf.sme.ers.client.model.Attendee;
-import io.pivotal.pcf.sme.ers.client.model.PagedAttendees;
 
 /**
  * AttendeeController
@@ -32,9 +28,6 @@ import io.pivotal.pcf.sme.ers.client.model.PagedAttendees;
 public class AttendeeController {
 
 	private Log log = LogFactory.getLog(AttendeeController.class);
-
-	@Autowired
-	private AttendeeClient attendeeClient;
 
 	@Autowired
 	private AttendeeService attendeeService;
@@ -94,20 +87,11 @@ public class AttendeeController {
 	 *            The model for this action.
 	 * @return The path to the view.
 	 */
-	@HystrixCommand(fallbackMethod = "defaultAttendees")
 	@RequestMapping(value = "/services", method = RequestMethod.GET)
 	public String attendees(Model model) throws Exception {
 
-		PagedAttendees attendees = attendeeClient.getAttendees();
-
-		model.addAttribute("attendees", attendees);
-		addAppEnv(model);
-		return "services";
-	}
-
-	// hystrix fallback
-	// MMB: find a way to exercise this
-	public String defaultAttendees(Model model) throws Exception {
+		model.addAttribute("attendees", attendeeService.getAttendees());
+		
 		addAppEnv(model);
 		return "services";
 	}
@@ -138,36 +122,11 @@ public class AttendeeController {
 		attendee.setLastName(lastName);
 		attendee.setEmailAddress(emailAddress);
 
-		attendeeClient.add(attendee);
+		attendeeService.add(attendee);
+		model.addAttribute("attendees", attendeeService.getAttendees());
 
 		addAppEnv(model);
 		return "services";
-	}
-
-	/**
-	 * SERVICES - searchAttendees
-	 * 
-	 * This is an interesting method that returns a page component based on a
-	 * thymeleaf fragment. We expect this to be an async call from the HTML
-	 * page.
-	 * 
-	 * @param firstName
-	 * @param model
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(value = "/search-attendees-fn", method = RequestMethod.GET)
-	public String searchAttendees(@RequestParam( value="firstName", required = false) String firstName, Model model) throws Exception {
-
-		PagedAttendees attendees = null;
-		if (firstName == null) {
-			attendees = attendeeClient.findAll();			
-		} else {
-			attendees = attendeeClient.searchName(firstName);
-		}
-
-		model.addAttribute("attendees", attendees);
-		return "fragments/list :: attendeeList";
 	}
 
 	/**

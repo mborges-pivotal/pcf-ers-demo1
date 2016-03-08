@@ -5,10 +5,15 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.pivotal.pcf.sme.ers.server.model.Attendee;
+import io.pivotal.pcf.sme.ers.server.repo.AttendeeRepository;
 
 /**
  * AttendeeServices
@@ -27,6 +32,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AttendeeService {
 
 	private Log log = LogFactory.getLog(AttendeeService.class);
+	
+	/// Polluting with server code
+	// http://blog.zenika.com/2012/06/15/hateoas-paging-with-spring-mvc-and-spring-data-jpa/
+	
+	@Autowired
+	private AttendeeRepository attendeeRepository;
+	
+	void add(io.pivotal.pcf.sme.ers.client.model.Attendee a1) {
+		Attendee a2 = new Attendee();
+		a2.setFirstName(a1.getFirstName());
+		a2.setLastName(a1.getLastName());
+		a2.setEmailAddress(a1.getEmailAddress());
+		attendeeRepository.saveAndFlush(a2);
+	}
+	
+	// returning server object
+	Iterable<Attendee> getAttendees() {
+		return attendeeRepository.findAll();
+	}
+	
+	// returning server object
+	Iterable<Attendee> searchName(String firstName) {
+		return attendeeRepository.findByFirstNameContainsIgnoreCase(firstName, new PageRequest(0,100));
+	}
+	
 
 	/**
 	 * bluegreenRequest - It really just returns the app name.
