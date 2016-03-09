@@ -40,9 +40,10 @@
 					</div>
 					<div class="panel-footer clearfix">
 						<div class="pull-right">
-							<a href="/bluegreen"
-								class="btn btn-default">Reset</a>
-							<a id="loadButton" href="javascript:toggleTimer();"
+							<a id="resetButton" href="javascript:reset();"
+								class="btn btn-default">Reset</a> <a id="resetButton"
+								href="/bluegreen" class="btn btn-default">Refresh</a> <a
+								id="loadButton" href="javascript:toggleTimer();"
 								class="btn btn-default">Start Simulation</a>
 						</div>
 					</div>
@@ -65,13 +66,21 @@
 
 		var colors = [ "#90A6D4", "#90D49C" ];
 
+		function reset() {
+			for (var version in versions) {
+				versions[version] = 0;
+			}
+		}
+
 		function toggleTimer() {
 			if (timerID == 0) {
 				startTimer();
 				$('#loadButton').text("Stop Simulation");
+				$('#resetButton').hide();
 			} else {
 				stopTimer();
 				$('#loadButton').text("Start Simulation");
+				$('#resetButton').show();
 			}
 		}
 
