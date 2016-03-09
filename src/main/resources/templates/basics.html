@@ -30,6 +30,36 @@
 
 			<div class="col-md-6">
 
+				<div th:if="${killed} == null" class="panel panel-default">
+					<div class="panel-body">
+						<p th:if="${ssh_file}">Wrote/updated file <b><span th:text="${ssh_file}"></span></b>. SSH into the container to see.</p>
+						<p id="loadResults"></p>
+						<div class="alert alert-danger" role="alert">
+							<b>Attention!</b> Before clicking on <i><b>kill</b></i> you may
+							want to ensure you have at least 2 application instances (HA)
+							configured. Otherwise be ready to wait a minute or so until PCF
+							auto-recovers the application.
+						</div>
+						<p>The application instance and container showed is not the
+							one necessarily being killed (unless you have one instance, of
+							course). PCF will load balance the request, however, we designed
+							the application to return with the application information prior
+							to terminating itself.</p>
+					</div>
+					<div class="panel-footer clearfix">
+
+						<div class="pull-left">
+							<a id="loadButton" href="javascript:toggleTimer();"
+								class="btn btn-default">Start Load Test</a> <a href="/ssh-file"
+								class="btn btn-default">Write File</a>
+						</div>
+
+						<div class="pull-right">
+							<a href="/basics" class="btn btn-default">Refresh</a> <a
+								href="/basics?doit=true" class="btn btn-danger">Kill</a>
+						</div>
+					</div>
+				</div>
 				<div th:if="${killed}" class="panel panel-default">
 					<div class="panel-body">
 						<p>
@@ -51,33 +81,6 @@
 					<div class="panel-footer clearfix">
 						<div class="pull-right">
 							<a href="/basics" class="btn btn-default">Refresh</a>
-						</div>
-					</div>
-				</div>
-				<div th:if="${killed} == null" class="panel panel-default">
-					<div class="panel-body">
-						<p id="loadResults"></p>
-						<div class="alert alert-danger" role="alert">
-							<b>Attention!</b> Before clicking on <i><b>kill</b></i> you may
-							want to ensure you have at least 2 application instances (HA)
-							configured. Otherwise be ready to wait a minute or so until PCF
-							auto-recovers the application.
-						</div>
-						<p>The application instance and container showed is not the
-							one necessarily being killed (unless you have one instance, of
-							course). PCF will load balance the request, however, we designed
-							the application to return with the application information prior
-							to terminating itself.</p>
-					</div>
-					<div class="panel-footer clearfix">
-
-						<div class="pull-left">
-							<a id="loadButton" href="javascript:toggleTimer();" class="btn btn-default">Start Load Test</a>
-						</div>
-
-						<div class="pull-right">
-							<a href="/basics" class="btn btn-default">Refresh</a> <a
-								href="/basics?doit=true" class="btn btn-danger">Kill</a>
 						</div>
 					</div>
 				</div>
@@ -113,7 +116,7 @@
 				$('#loadButton').text("Start Load Test");
 			}
 		}
-		
+
 		function startTimer() {
 			timerID = setInterval(startLoad, INTERVAL);
 		}
@@ -151,10 +154,14 @@
 
 					value = (load[appKey] / total) * 100;
 
-					html += '<p><b>' + appKey + '</b> - <span id="blink">' + value + '% </span> </p>'
+					html += '<p><b>' + appKey + '</b> - <span id="blink">'
+							+ value + '% </span> </p>'
 				}
 
-				$('#loadResults').html(html);
+				if (timerID != 0) {
+					$('#loadResults').html(html);
+				}
+
 			});
 
 		}

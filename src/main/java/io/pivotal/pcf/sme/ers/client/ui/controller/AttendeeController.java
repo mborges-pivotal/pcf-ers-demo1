@@ -1,5 +1,11 @@
 package io.pivotal.pcf.sme.ers.client.ui.controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -78,6 +84,25 @@ public class AttendeeController {
 
 		return "basics";
 
+	}
+	
+	@SuppressWarnings("resource")
+	@RequestMapping(value = "/ssh-file", method = RequestMethod.GET)
+	public String writeFile(Model model) throws Exception {
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yy HH:mm:ss");
+		Date date = new Date();
+		File f = new File("ers-ssh-demo.log");
+		FileWriter fw = new FileWriter(f, true);
+		Writer w = new BufferedWriter(fw);
+		w.write(dateFormat.format(date) + "\n");
+		w.flush();
+		
+		model.addAttribute("ssh_file", f.getAbsoluteFile());
+		addAppEnv(model);
+
+		return "basics";
+		
 	}
 
 	/**
