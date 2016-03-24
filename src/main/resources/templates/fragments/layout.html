@@ -141,6 +141,10 @@ References:
 							The instance address is <b id="instanceAddress" th:text="${instanceAddr}"></b>
 						</p>
 
+						<p th:if="${inetaddressLocalhost != null}">
+							Local IP address is <b id="inetaddressLocalhost" th:text="${inetaddressLocalhost}"></b>
+						</p>
+
 						<h4>Services</h4>
 						<p th:if="${applicationServices.isEmpty()}">Using embedded H2
 							DB</p>
