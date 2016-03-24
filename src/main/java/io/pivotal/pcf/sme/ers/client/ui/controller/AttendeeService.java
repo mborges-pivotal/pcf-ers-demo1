@@ -1,5 +1,7 @@
 package io.pivotal.pcf.sme.ers.client.ui.controller;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +115,14 @@ public class AttendeeService {
 		Map services = getVcapServicesMap();
 		modelMap.put("applicationServices", services);
 
+		// getting host local address
+		try {
+            InetAddress ipAddr = InetAddress.getLocalHost();
+    		modelMap.put("inetaddressLocalhost", ipAddr);
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        }
+		
 		return modelMap;
 	}
 

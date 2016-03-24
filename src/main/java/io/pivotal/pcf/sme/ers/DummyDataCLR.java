@@ -1,5 +1,8 @@
 package io.pivotal.pcf.sme.ers;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.PageRequest;
