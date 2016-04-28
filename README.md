@@ -51,7 +51,7 @@ The application tries to be self-descriptive. You'll see when you access the app
 
 ## Jenkins Integration
 
-1. Fork this repository;
+**Fork this repository**
 2. Create a new Job;
 3. Choose "this build is parameterized" option and include the following parameters:
 
