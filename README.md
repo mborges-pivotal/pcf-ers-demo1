@@ -54,14 +54,16 @@ The application tries to be self-descriptive. You'll see when you access the app
 1. Create a new Job;
 2. Choose "this build is parameterized" option and include the following parameters:
 
-String parameter: CF_SYSTEM_DOMAIN <PCF api, ex: https://api.local.pcfdev.io>
-String parameter: CF_APPS_DOMAIN <apps domain, ex: local.pcfdev.io>
-String parameter: CF_USER 
-Password parameter: CF_PASSWORD
-String parameter: CF_ORG
-String parameter: CF_SPACE
-String parameter: CF_APP <apps name: attendees>
-String parameter: CF_JAR <path to jar: target/pcf-ers-demo1-0.0.1-SNAPSHOT.jar>
+```
+[String parameter] CF_SYSTEM_DOMAIN <PCF api, ex: https://api.local.pcfdev.io>
+[String parameter] CF_APPS_DOMAIN <apps domain, ex: local.pcfdev.io>
+[String parameter] CF_USER 
+[Password parameter] CF_PASSWORD
+[String parameter] CF_ORG
+[String parameter] CF_SPACE
+[String parameter] CF_APP <apps name: attendees>
+[String parameter] CF_JAR <path to jar: target/pcf-ers-demo1-0.0.1-SNAPSHOT.jar>
+```
 
 3. At "Source code management" add the git repository
 4. At "Build" add the option "Execute shell script" and paste the following script:
