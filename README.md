@@ -66,6 +66,7 @@ String parameter: CF_JAR <path to jar: target/pcf-ers-demo1-0.0.1-SNAPSHOT.jar>
 3. At "Source code management" add the git repository
 4. At "Build" add the option "Execute shell script" and paste the following script:
 
+```
 ./mvnw clean install
 
 # login to the cf api
@@ -76,5 +77,5 @@ cf push "$CF_APP"
 
 APP_NAME="$CF_APP"
 URL="$(/usr/local/bin/cf app $APP_NAME | grep URLs| cut -c7-)"
-
+```
 
