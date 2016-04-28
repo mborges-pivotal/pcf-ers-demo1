@@ -51,8 +51,10 @@ The application tries to be self-descriptive. You'll see when you access the app
 
 ## Jenkins Integration
 
-* Fork this repository
-* Create a new Job;
+* Fork this repository to your Git account
+
+* At Jenkins, create a new Job
+
 * Choose "this build is parameterized" option and include the following parameters:
 
 ```
@@ -87,8 +89,10 @@ APP_NAME="$CF_APP"
 URL="$(/usr/local/bin/cf app $APP_NAME | grep URLs| cut -c7-)"
 ```
 
-* Save the configuration;
+* Save the configuration
 
-* Go to your project initial page and click on "Run with parameters" at the left side;
+* Go to your project initial page and click on "Run with parameters" at the left side
 
-* To see the logs, click on the build number and then click on console output;
+* To see the logs, click on the build number and then click on console output
+
+* Your app should be online
