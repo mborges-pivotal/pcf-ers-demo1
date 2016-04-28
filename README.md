@@ -51,8 +51,9 @@ The application tries to be self-descriptive. You'll see when you access the app
 
 ## Jenkins Integration
 
-1. Create a new Job;
-2. Choose "this build is parameterized" option and include the following parameters:
+1. Fork this repository;
+2. Create a new Job;
+3. Choose "this build is parameterized" option and include the following parameters:
 
 ```
 [String parameter] CF_SYSTEM_DOMAIN <PCF api, ex: https://api.local.pcfdev.io>
@@ -65,8 +66,13 @@ The application tries to be self-descriptive. You'll see when you access the app
 [String parameter] CF_JAR <path to jar: target/pcf-ers-demo1-0.0.1-SNAPSHOT.jar>
 ```
 
-3. At "Source code management" add the git repository
-4. At "Build" add the option "Execute shell script" and paste the following script:
+4. At "Source code management" add the git repository
+
+```
+https://github.com/<your user>/pcf-ers-demo1
+```
+
+5. At "Build" add the option "Execute shell script" and paste the following script:
 
 ```
 ./mvnw clean install
@@ -81,3 +87,8 @@ APP_NAME="$CF_APP"
 URL="$(/usr/local/bin/cf app $APP_NAME | grep URLs| cut -c7-)"
 ```
 
+6. Save the configuration;
+
+7. Go to your project initial page and click on "Run with parameters" at the left side;
+
+8. To see the logs, click on the build number and then click on console output;
