@@ -49,4 +49,50 @@ Take a look at the manifest file for the recommended setting. Adjust them as per
 ## Demo Scripts summary
 The application tries to be self-descriptive. You'll see when you access the application.
 
+## Jenkins Integration
 
+* Fork this repository to your Git account
+
+* At Jenkins, create a new Job
+
+* Choose "this build is parameterized" option and include the following parameters:
+
+```
+[String parameter] CF_SYSTEM_DOMAIN <PCF api, ex: https://api.local.pcfdev.io>
+[String parameter] CF_APPS_DOMAIN <apps domain, ex: local.pcfdev.io>
+[String parameter] CF_USER 
+[Password parameter] CF_PASSWORD
+[String parameter] CF_ORG
+[String parameter] CF_SPACE
+[String parameter] CF_APP <apps name: attendees>
+[String parameter] CF_JAR <path to jar: target/pcf-ers-demo1-0.0.1-SNAPSHOT.jar>
+```
+
+* At "Source code management" add the git repository
+
+```
+https://github.com/<your user>/pcf-ers-demo1
+```
+
+* At "Build" add the option "Execute shell script" and paste the following script:
+
+```
+./mvnw clean install
+
+# login to the cf api
+cf login -a $CF_SYSTEM_DOMAIN -u $CF_USER -p $CF_PASSWORD -o $CF_ORG -s $CF_SPACE --skip-ssl-validation
+
+# push the app
+cf push "$CF_APP" 
+
+APP_NAME="$CF_APP"
+URL="$(/usr/local/bin/cf app $APP_NAME | grep URLs| cut -c7-)"
+```
+
+* Save the configuration
+
+* Go to your project initial page and click on "Run with parameters" at the left side
+
+* To see the logs, click on the build number and then click on console output
+
+* Your app should be online
